@@ -1,108 +1,94 @@
+import { useState } from 'react';
+import './Login.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-import React from 'react'
-import './App.css';
-import './login.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/js/bootstrap.min.js';
-const defaultState = {
-  name:null,
-  email:null,
-  password:null,
-  nameError:null,
-  emailError:null,
-  passwordError:null
+function Login(){
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [Date,setDate]=useState("");
+  const handleSignUp = () => {
+    // Handle sign up logic here
+
+  };
+
+  const handleSignIn = () => {
+    // Handle sign in logic here
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+  const handleDatechange = (event)=>{
+    setDate(event.target.value)
   }
-  class login extends React.Component{
-    constructor(){
-      super();
-      this.state = defaultState;
-      this.handleInputChange = this.handleInputChange.bind(this);
-      }
-      handleInputChange(event) {
-      const target = event.target;
-      var value = target.value;
-      const name = target.name;
-      this.setState({
-      [name]: value
-      });
-      }
-      validate(){
-      let nameError = "";
-      let emailError = "";
-      let passwordError = "";
-      if(!this.state.name){
-      nameError = "Name field is required";
-      }
-      const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      if(!this.state.email || reg.test(this.state.email) === false){
-      emailError = "Email Field is Invalid ";
-      }
-      if(!this.state.password){
-      passwordError = "Password field is required";
-      }
-      if(emailError || nameError || passwordError){
-      this.setState({nameError,emailError,passwordError});
-      return false;
-      }
-      return true;
-      }
-      submit(){
-      if(this.validate()){
-      console.warn(this.state);
-      this.setState(defaultState);
-      }
-      }
-    render(){
-      return(
-        <div className="App">
-          <div class="container-fluid ps-md-0">
-              <div class="row g-0">
-                <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
-                <div class="col-md-8 col-lg-6">
-                  <div class="login d-flex align-items-center py-5">
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-md-9 col-lg-8 mx-auto">
-                          <h3 class="login-heading mb-4">Welcome back!</h3>
-            
-                          
-                          <form>
-                            <div class="form-floating mb-3">
-                              <input type="email" className={"form-control " + (this.state.emailError ? 'invalid' : '')} id="floatingInput" name='email' placeholder="name@example.com" value={this.state.email} onChange={this.handleInputChange} />
-                              <label for="floatingInput">Email address</label>
-                              <span className="text-danger">{this.state.emailError}</span>
-                            </div>
-                            <div class="form-floating mb-3">
-                              <input type="password" className={"form-control " + (this.state.passwordError ? 'invalid' : '')} id="floatingPassword" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange} />
-                              <label for="floatingPassword">Password</label>
-                              <span className="text-danger">{this.state.passwordError}</span>
-                            </div>
-            
-                            <div class="form-check mb-3">
-                              <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck" />
-                              <label class="form-check-label" for="rememberPasswordCheck">
-                                Remember password
-                              </label>
-                            </div>
-            
-                            <div class="d-grid">
-                              <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="button" onClick={()=>this.submit()}>Sign in</button>
-                              <div class="text-center">
-                                <a class="small" href="#">Forgot password?</a>
-                              </div>
-                            </div>
-            
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
+  return (
+    <div className="body-container">
+      <div className="container" id="container">
+        <div>
+          <div className={`form-container ${isSignUp ? 'sign-up-container' : 'sign-in-container'}`}>
+            {isSignUp ? (
+              <form onSubmit={handleSignUp}>
+                <h1>Create Account</h1>
+                <input type="text" placeholder="Name" value={name} onChange={handleNameChange} />
+                <br></br>
+                <input type="email" placeholder="Email" value={email} onChange={handleEmailChange} />
+
+                <br></br>
+                <input placeholder="Date of Birth" type="text" onFocus={(e)=> {
+                                                    e.currentTarget.type = "date";
+                                                    e.currentTarget.focus();
+                                                                      }
+                                                    } value={Date} onChange={handleDatechange} />
+                <br></br>
+
+                <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+                <br></br>
+              
+                <button type="submit" className="btn-grad">Sign Up</button>
+              </form>
+            ) : (
+              <form onSubmit={handleSignIn}>
+                <h1>Sign In</h1>
+                <input type="email" placeholder="Email/Username" value={email} onChange={handleEmailChange} />
+                <br></br>
+                <input type="password" placeholder="Password" value={password} onChange={handlePasswordChange} />
+                <a href="#">Forgot your password?</a>
+                <button type="submit" className="btn-grad">Sign In</button>
+              </form>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <div className="overlay-container">
+            <div className="overlay">
+              <div className="overlay-panel overlay-left">
+                <h1>Welcome Back!</h1>
+                <p>Start from where you left</p>
+                <button className="btn-grad" onClick={() => setIsSignUp(false)}>Sign In</button>
+              </div>
+              <div className="overlay-panel overlay-right">
+                <h1>Hello, Buddy!</h1>
+                <p>Join Us on a new adventure</p>
+                <button className="btn-grad" onClick={() => setIsSignUp(true)}>Sign Up</button>
               </div>
             </div>
+          </div>
         </div>
- )  
-}
+      </div>
+    </div>
+  );
 }
 
-export default login
+export default Login;
