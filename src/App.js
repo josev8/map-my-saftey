@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
-import Login from './login'; 
+import Login from './Login'; 
+import { GoogleFont } from 'react-typography';
 
 const App=()=>{
 	return(
